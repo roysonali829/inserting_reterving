@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from django.db.models.functions import Length
 from app.models import *
 
 # Create your views here.
@@ -11,8 +12,20 @@ def display_topic(request):
 
 def display_webpage(request):
     QSWO = Webpage.objects.all()
+    QSWO=Webpage.objects.filter(topic_name='Cricket')
+    QSWO=Webpage.objects.exclude(topic_name='Cricket')
+    QSWO=Webpage.objects.all().order_by('name')
+    QSWO=Webpage.objects.filter(pk=3)
+    QSWO=Webpage.objects.filter(topic_name='Cricket').order_by('name')
+    QSWO=Webpage.objects.all().order_by('-name')
+    QSWO=Webpage.objects.all().order_by(Length('name'))
+
+    QSWO=Webpage.objects.all().order_by(Length('name').desc())
+
+
     d = {'QSWO':QSWO}
     return render(request,'display_webpage.html',d)
+
 
 def display_access(request):
     QSAO = AccessRecord.objects.all()
@@ -39,6 +52,7 @@ def Insert_Webpage(request):
     QSWO = Webpage.objects.all()
     d = {'QSWO':QSWO}
     return render(request,'display_webpage.html',d)
+
 
 def Insert_Access(request):
     tn = input('Enter the Topic : ')
